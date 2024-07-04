@@ -2,8 +2,10 @@
 //  locationManager.swift
 //  BlueScan
 //
-//  Created by Apprenant 133 on 21/06/2024.
+//  Created by Minh on 21/06/2024.
 //
+
+// POUR LA GEOLOCALISATION - A VOIR SI UTILISE
 
 import Foundation
 import CoreLocation

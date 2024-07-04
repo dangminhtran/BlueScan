@@ -2,10 +2,10 @@
 //  Map.swift
 //  BlueScan
 //
-//  Created by Apprenant 133 on 21/06/2024.
-//
+//  Created by Minh on 21/06/2024.
 
-// AJOUTER LA GEOLOCALISATION
+// AJOUTER LA GEOLOCALISATION SI LE TEMPS - MINH
+
 import SwiftUI
 import MapKit
 
@@ -315,4 +315,5 @@ struct MapScreen: View {
 #Preview {
     MapScreen()
 }
+
 

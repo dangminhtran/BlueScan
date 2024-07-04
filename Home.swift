@@ -2,108 +2,110 @@
 //  ContentView.swift
 //  My new project
 //
-//  Created by apprenant179 on 18/06/2024.
-//
+//  Created by Selva on 18/06/2024.
+// Modified by Casey on 03/07/2024.
+
 
 
 import SwiftUI
+import VisionKit
 
 struct Home: View {
-    var info1 = Articles(
-        image: "info1", title: "Comment limiter l'acidification des océans?",
-        description: "Quand il s’agit de préservation de l’océan, c’est à terre que (presque) tout se joue. C’est tellement contre-intuitif qu’on le répète encore et encore. Et pour mieux saisir les enjeux, il y a un concept clé à connaître : l’acidification de l’océan. On vous explique.",
-        subtitle: "Le problème. /t🍋 L'acidification des océans",
-        descriptionSuite: """
-    Vous vous souvenez de vos cours de physique-chimie du collège ? Pour moi, c’est déjà loin, alors je me suis dit qu’un petit rappel ne ferait pas de mal ! Toutes les solutions aqueuses ont un pH ou potentiel hydrogène. Celui-ci sert à mesurer l’acidité ou la basicité d’une solution. Le pH peut aller de 0 à 14. À 7, le pH est neutre. Ce qui est au-dessus de 7 est basique et ce qui est en dessous de 7 est acide. Maintenant qu’on a mis les choses à plat, place au constat sur le pH de l’océan. Entre 1850 et 2015, le pH moyen en surface est passé de 8,2 à 8,1. -0,1. L’évolution peut paraître insignifiante, mais les apparences sont trompeuses ! En fait, l’échelle du pH est logarithmique. En clair, ça signifie qu’en moins de 200 ans, on a une hausse de 30% de l’acidité de l’océan. C’est énorme !
-    """)
+    @State private var infoDuJour: Articles = info1
+    //@State private var title: String = "Bienvenue, \(prenom)👋"
+    
+    @Binding var prenom: String
+    
+    
     var body: some View {
         
         NavigationStack {
-            
             ZStack{
-                
-                // FORME ORGANIQUE
-                //                Image("headerGreen")
-                //                    .resizable()
-                //                    .frame(width: UIScreen.main.bounds.width, height: 210)
-                //                    .offset(x: 0, y: -400)
-                //                    .ignoresSafeArea()
-                //
-                //
-                //
-                //                Image("footerGreen")
-                //                    .resizable()
-                //                    .aspectRatio(contentMode: .fill)
-                //                    .frame(width: UIScreen.main.bounds.width, height: 200)
-                //                    .offset(x: 0, y: 380)
-                
+                //Same background called for all pages in extraction de vue
                 Background()
                 
-                VStack {
-                    Text("Bienvenue, Alan 👋")
+                VStack (spacing: 20, content: {
+                    Spacer()
+                    
+                    Text("Bonjour, \(prenom) 👋")
                         .font(.custom("Poppins-Bold", size: 30))
-                        .foregroundStyle(Color.customBleu)
-                    VStack(alignment: .leading){
-                        Text("Info du jour")
+                        .foregroundStyle(.customBleu)
+                    
+                    Spacer()
+                    
+                    Text("Info du jour")
+                        .foregroundStyle(.customBleu)
+                        .font(.custom("Poppins-Bold", size: 20))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.top)
+                    
+                    // Link directly to article
+                    NavigationLink(destination: InfosDetails(articleData: infoDuJour)) {
+                        Rectangle()
                             .foregroundStyle(.customBleu)
-                            .font(.custom("Poppins-Bold", size: 20))
-                        
-                        NavigationLink(destination: InfosDetails()) {
-                            ZStack(alignment: Alignment(horizontal: .center, vertical: .top), content:
+                            .frame(width: 360, height: 250)
+                            .cornerRadius(30)
+                            .overlay {
+                                HStack {
+                                    Image(infoDuJour.image)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 170, height: 250)
+                                        .clipped()
+                                        .cornerRadius(30)
                                     
-                                    {
-                                Rectangle()
-                                    .foregroundStyle(.customBleu)
-                                    .frame(width: 385, height: 250)
-                                    .cornerRadius(30)
-                                    .overlay {
-                                        HStack {
-                                            Image(info1.image)
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fill)
-                                                .frame(width: 170, height: 250)
-                                                .clipped()
-                                                .cornerRadius(30)
-                                                .padding(.trailing, 10)
-                                            VStack(alignment:.leading) {
-                                                Text(info1.title)
-                                                    .foregroundStyle(Color.customVert)
-                                                    .font(.custom("Poppins-Bold", size: 20))
-                                                
-                                                
-                                                Text(info1.description)
-                                                    .lineLimit(4)
-                                                    .foregroundColor(.white)
-                                            }.multilineTextAlignment(.leading)
-                                        }
+                                    VStack(alignment: .leading) {
+                                        Text(infoDuJour.title)
+                                            .foregroundStyle(Color.customVert)
+                                            .font(.custom("Poppins-Bold", size: 18))
                                         
-                                        
+                                        Text(infoDuJour.description)
+                                            .lineLimit(4)
+                                            .foregroundColor(.white)
                                     }
-                            }).padding(.bottom, 30)
-                        }
-                        Text("Scanner mon produit")
+                                    .multilineTextAlignment(.leading)
+                                    .padding(.leading, 4)
+                                    .padding(.trailing, 10)
+                                }
+                            }
+                    }.frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    // Link to all actus/info segmented control page
+                    NavigationLink(destination: ActusInfosToggle()) {
+                        Text("Découvrir toutes nos infos >")
                             .foregroundStyle(.customBleu)
-                            .font(.custom("Poppins-Bold", size: 20))
-                        
-                        
+                            .font(.custom("Poppins-Bold", size: 16))
+                            .frame(width: 300, height: 44)
+                            .background(.customMauve)
+                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                    }
+                    
+                    Text("Scanner mon produit")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .foregroundStyle(.customBleu)
+                        .font(.custom("Poppins-Bold", size: 20))
+                    
+                    // Scanner button - scanner not working here
+                    NavigationLink(destination: ScannerScreen()) {
                         ZStack(alignment: Alignment(horizontal: .center, vertical: .center), content: {
                             
                             Circle()
-                                .frame(width: 150, height: 150)
+                                .frame(width: 130, height: 130)
                                 .foregroundColor(.customOrange)
                             Image("scanner")
-                        }).padding(.leading, 95)
-                    }.padding(.horizontal)
-                    
-                }
-                
+                        })
+                    }
+                    Spacer()
+                })
+                .padding(.leading, 16)
+                .padding(.trailing, 16)
             }
-            
-        }
+        }.navigationBarBackButtonHidden(true)
     }
 }
 
 
 #Preview {
-    Home()
+    Home(prenom: .constant("Alan"))
 }
+
